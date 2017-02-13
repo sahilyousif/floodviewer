@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+	<meta charset="utf-8">
+	<title>Flood Map Viewer</title>
+
+	<link rel="stylesheet" href="css/style.css" />
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+	<script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
+	<!-- Latest compiled and minified JavaScript  -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
+	<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+	
+</head>
+<body>
+
+	<div class="container-fluid" style="height:100%; padding:0">
+		<div id="sidebar" class="col-lg-3">
+			<div class="row">
+
+				<h4>10 year flood</h4>
+				<div class="col-lg-9">
+					
+					<input type="range" min="0" max="5" value="0" id="fader" 
+					step="1" list="volsettings" oninput="outputUpdate(value)">
+					<datalist id="volsettings">
+						<option>0</option>
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+					</datalist>
+				</div>
+				<div class="col-lg-3">
+					<output for="fader" id="slr">0 SLR</output>
+				</div>
+				
+			</div>
+		</div>
+		<div id="map" class="col-lg-9"></div>
+	</div>
+
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Please Note</h4>
+				</div>
+				<div class="modal-body">
+					This website is currently under development. It may take a moment for the map to load all its layers. This dialog will close automatically once all the layers are loaded in memory.
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
+	
+	<script>
+
+	$('#myModal').modal('show')
+
+	var map = L.map('map').setView([ 46.966162,  -123.802774], 13);
+	var layer = [];
+	var layer_cached = [false,false,false,false,false,false];
+	L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
+		maxZoom: 20,
+		subdomains:['mt0','mt1','mt2','mt3']}).addTo(map);
+
+	
+   // load GeoJSON from an external file
+   $.getJSON("json/10yr_0slr.json",function(data){
+	    // add GeoJSON layer to the map once the file is loaded
+	    layer[0] = L.geoJson(data, {
+	    	style: function(feature){
+	    		fillColor = "#FFF0C3";
+	    		return { color: "#999", weight: 1, fillColor: fillColor, fillOpacity: 1.0 };
+	    	}
+	    })
+
+	    map.addLayer(layer[0]);
+	    layer_cached[0] = true;
+	    checkCache();
+
+	});
+
+   $.getJSON("json/10yr_1slr.json",function(data){
+	    // add GeoJSON layer to the map once the file is loaded
+	    layer[1] = L.geoJson(data, {
+	    	style: function(feature){
+	    		fillColor = "#FFDE9F";
+	    		return { color: "#999", weight: 1, fillColor: fillColor, fillOpacity: 1.0 };
+	    	}
+	    })
+
+	    layer_cached[1] = true;
+	    checkCache();
+
+	});
+
+   $.getJSON("json/10yr_2slr.json",function(data){
+	    // add GeoJSON layer to the map once the file is loaded
+	    layer[2] = L.geoJson(data, {
+	    	style: function(feature){
+	    		fillColor = "#FFBF40";
+	    		return { color: "#999", weight: 1, fillColor: fillColor, fillOpacity: 1.0 };
+	    	}
+	    })
+
+	    layer_cached[2] = true;
+	    checkCache();
+
+	});
+
+   $.getJSON("json/10yr_3slr.json",function(data){
+	    // add GeoJSON layer to the map once the file is loaded
+	    layer[3] = L.geoJson(data, {
+	    	style: function(feature){
+	    		fillColor = "#ECB240";
+	    		return { color: "#999", weight: 1, fillColor: fillColor, fillOpacity: 1.0 };
+	    	}
+	    })
+
+	    layer_cached[3] = true;
+	    checkCache();
+
+	});
+
+   $.getJSON("json/10yr_4slr.json",function(data){
+	    // add GeoJSON layer to the map once the file is loaded
+	    layer[4] = L.geoJson(data, {
+	    	style: function(feature){
+	    		fillColor = "#BE9440";
+	    		return { color: "#999", weight: 1, fillColor: fillColor, fillOpacity: 1.0 };
+	    	}
+	    })
+
+	    layer_cached[4] = true;
+	    checkCache();
+
+	});
+
+   $.getJSON("json/10yr_5slr.json",function(data){
+	    // add GeoJSON layer to the map once the file is loaded
+	    layer[5] = L.geoJson(data, {
+	    	style: function(feature){
+	    		fillColor = "#967940";
+	    		return { color: "#999", weight: 1, fillColor: fillColor, fillOpacity: 1.0 };
+	    	}
+	    })
+
+	    layer_cached[5] = true;
+	    checkCache(); 
+
+	});
+
+
+
+   var slider_current = 0;
+   
+   function checkCache(){
+
+
+   	all_cached = true;
+   	for(i=0; i<6; i++)
+   	{
+   		if(layer_cached[i] == false)
+   		{
+   			all_cached = false;
+   			break;
+   		}
+   	}
+   	if(all_cached == true)
+   	{
+   		$('#myModal').modal('hide')
+   	}
+   }
+   
+
+   function outputUpdate(val) {
+   	document.querySelector('#slr').value = val + " SLR";
+
+   	if(slider_current < parseInt(val)){
+   		
+   		var i = slider_current + 1;
+   		while(i <= parseInt(val)){
+   			
+   			if(layer_cached[i])
+   			{
+   				console.log("using cached layer " + i)
+   				map.addLayer(layer[i])
+   				i = i+1
+   			}
+   			
+   		}
+   	} else if (slider_current > parseInt(val)){
+   		
+   		var i = slider_current;
+   		while(i > parseInt(val)){
+   			console.log("removing cached layer " + i)
+   			map.removeLayer(layer[i]);
+   			i = i-1;
+   		}
+   	}
+   	
+   	slider_current = parseInt(val);
+   	
+   }
+
+
+   </script>
+
+
+
+</body>
+
+
+</html>
+

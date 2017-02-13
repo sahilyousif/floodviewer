@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  
+  <title>GeoJSON tutorial - Leaflet</title>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
+  <title>Fusion Tables layers</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+  <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
+  <!-- Latest compiled and minified JavaScript  -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  
+  
+</head>
+<body>
+
+  
+
+    <div class="container-fluid" style="height:100%; padding:0">
+      <div id="sidebar" class="col-lg-3">
+      <div class="row">
+        <h4>10 year flood</h4>
+        <div class="col-lg-10">
+          
+        <input type="range" min="0" max="5" value="0" id="fader" 
+        step="1" list="volsettings" oninput="outputUpdate(value)">
+        <datalist id="volsettings">
+          <option>0</option>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </datalist>
+      </div>
+      <div class="col-lg-2">
+        <output for="fader" id="slr">0 SLR</output>
+        </div>
+        
+      </div>
+    </div>
+    <div id="map" class="col-lg-9"></div>
+  </div>
+
+  
+  <script>
+
+  function sleep (time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+  }
+
+  
+    
+
+  
+  function initMap(){
+  
+    var map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: 46.966162, lng: -123.802774},
+      zoom: 13
+    });
+
+    var layer = [];
+
+    layer[0] = new google.maps.FusionTablesLayer({
+      query: {
+        select: '\'geometry\'',
+        from: '1_rNdgNy-wm337Bak6KnmC3AkyHUtKE3JiOedyTvd'
+      },
+      styles: [{
+        polygonOptions: {
+          fillColor: '#FFF0C3',
+          fillOpacity: 1.0,
+          strokeWeight: 0,
+          strokeOpacity: 0.1,
+          strokeColor: '#000000'
+        }
+      }]
+    });
+
+
+    layer[1] = new google.maps.FusionTablesLayer({
+      query: {
+        select: '\'geometry\'',
+        from: '1gklLCtY3tfvmmMq-0s_LqNySymmBtoXVm910LUsL'
+      },
+      styles: [{
+        polygonOptions: {
+          fillColor: '#FFDE9F',
+          fillOpacity: 1.0,
+          strokeWeight: 0,
+          strokeOpacity: 0.1,
+          strokeColor: '#000000'
+        }
+      }]
+    });
+
+    layer[2] = new google.maps.FusionTablesLayer({
+      query: {
+        select: '\'geometry\'',
+        from: '1JOC7mMfCH6Ux3q21bv7hTsndL-LlcJ6XXqKU2JxP'
+      },
+      styles: [{
+        polygonOptions: {
+          fillColor: '#FFBF40',
+          fillOpacity: 1.0,
+          strokeWeight: 0,
+          strokeOpacity: 0.1,
+          strokeColor: '#000000'
+        }
+      }]
+    });
+
+    layer[3] = new google.maps.FusionTablesLayer({
+      query: {
+        select: '\'geometry\'',
+        from: '1SiYjuZBKS0zLG1XY-T3Af8idsU3TfedvtQNjzuly'
+      },
+      styles: [{
+        polygonOptions: {
+          fillColor: '#ECB240',
+          fillOpacity: 1.0,
+          strokeWeight: 0,
+          strokeOpacity: 0.1,
+          strokeColor: '#000000'
+        }
+      }]
+    });
+
+    layer[4] = new google.maps.FusionTablesLayer({
+      query: {
+        select: '\'geometry\'',
+        from: '1OR9J0_OdyyuTJsT9zDb7muA7FRnNvgeLo3hu9s5H'
+      },
+      styles: [{
+        polygonOptions: {
+          fillColor: '#BE9440',
+          fillOpacity: 1.0,
+          strokeWeight: 0,
+          strokeOpacity: 0.1,
+          strokeColor: '#000000'
+        }
+      }]
+    });
+
+    layer[5] = new google.maps.FusionTablesLayer({
+      query: {
+        select: '\'geometry\'',
+        from: '1dHyMRKpkfO_wJ0J7tdWvlI5wOqovz0988M5yqaol'
+      },
+      styles: [{
+        polygonOptions: {
+          fillColor: '#967940',
+          fillOpacity: 1.0,
+          strokeWeight: 0,
+          strokeOpacity: 0.1,
+          strokeColor: '#000000'
+        }
+      }]
+    });
+
+    layer[0].setMap(map);
+    sleep(2000);  
+    layer[4].setMap(map);
+
+  } 
+
+  function outputUpdate(val) {
+    document.querySelector('#slr').value = val + " SLR";
+    // while(val > 0){
+      console.log(val)
+      layer[0].setMap(map);
+      // val--;
+    // };
+  }
+  </script>
+  
+
+
+</body>
+
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZ2WWx3aY0ZYv0rj7nGmODxc3DAW3BV2Y&callback=initMap">
+    </script>
+</html>
+
+
+
+  <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
+
+  <style>
+    #map {
+      width: 600px;
+      height: 400px;
+    }
+  </style>
+
+  
+</head>
+<body>
+
+<div id='map'></div>
+
+
+<script>
+
+
+  var map = L.map('map').setView([ 46.966162,  -123.802774], 13);
+
+ L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
+    maxZoom: 20,
+    subdomains:['mt0','mt1','mt2','mt3']}).addTo(map);
+
+
+   // load GeoJSON from an external file
+  $.getJSON("json/test.json",function(data){
+    // add GeoJSON layer to the map once the file is loaded
+    
+    L.geoJson(data, {
+      style: function(feature){
+        fillColor = "#31a354";
+        return { color: "#999", weight: 1, fillColor: fillColor, fillOpacity: .6 };
+      }
+    }).addTo(map);
+  });
+
+  
+
+
+
+</script>
+
+
+
+</body>
+</html>

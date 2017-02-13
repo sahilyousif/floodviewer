@@ -1,0 +1,35 @@
+/* Always set the map height explicitly to define the size of the div
+* element that contains the map. */
+#map {
+	height: 100%;
+}
+/* Optional: Makes the sample page fill the window. */
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+#sidebar
+{
+	/*float: left;*/
+	/*width: 25%;*/
+	background: #ffffff;
+	min-height: 100%;
+	padding: 25px !important;
+}
+::-webkit-slider-thumb,
+	::-moz-range-thumb,
+	 ::-ms-thumb {
+	-webkit-appearance: none;
+	background-color: #ff0000;
+	width: 10px;
+	height: 20px;
+}
+input[type=range],
+	::-moz-range-track,
+	 ::-ms-track {
+	 -webkit-appearance: none;
+	 background-color: #ff0000;
+	 /*width: 250px;*/
+	 height:20px;
+}
